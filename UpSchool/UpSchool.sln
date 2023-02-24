@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpSchool.Domain", "UpSchool
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuckySister.Console", "LuckySister.Console\LuckySister.Console.csproj", "{02BD3CAF-E6B1-42D2-9622-D276E41E5556}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpSchool.Wasm", "UpSchool.Wasm\UpSchool.Wasm.csproj", "{F7ECDF0D-D285-42AF-84E4-17CAB1E7E8D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{02BD3CAF-E6B1-42D2-9622-D276E41E5556}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02BD3CAF-E6B1-42D2-9622-D276E41E5556}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02BD3CAF-E6B1-42D2-9622-D276E41E5556}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7ECDF0D-D285-42AF-84E4-17CAB1E7E8D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7ECDF0D-D285-42AF-84E4-17CAB1E7E8D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7ECDF0D-D285-42AF-84E4-17CAB1E7E8D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7ECDF0D-D285-42AF-84E4-17CAB1E7E8D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
