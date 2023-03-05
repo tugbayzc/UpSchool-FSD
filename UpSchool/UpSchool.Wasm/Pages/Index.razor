@@ -1,10 +1,21 @@
 ﻿@page "/"
+@using UpSchool.Domain.Services
 @inject NavigationManager NavigationManager
-<h2>Index Page</h2>
+@inject IToasterService ToastService 
+@inject IUrlHelperService UrlHelperService
+<h2>Index Page - @TitanicUrl</h2>
 
 <button class="btn btn-info" @onclick="@(() => NavigationManager.NavigateTo($"/passwordGenerator/{Length}"))">Go to the Password Generator Page</button>
 
 @code
 {
     public string Length = "25";
+    public string TitanicUrl { get; set; }  
+
+    
+    protected override void OnInitialized()
+    {
+        TitanicUrl = UrlHelperService.ApiUrl;
+        base.OnInitialized();
+    }
 }
