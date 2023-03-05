@@ -1,13 +1,14 @@
 using UpSchool.Domain.Services;
 
-namespace UpSchool.Wasm.Services;
-
-public class UrlHelperService:IUrlHelperService
+namespace UpSchool.Wasm.Services
 {
-    public string ApiUrl { get; }
-
-    public UrlHelperService(string apiUrl)
+    public class UrlHelperService:IUrlHelperService
     {
-        ApiUrl = apiUrl;
+        public string ApiUrl { get; }
+
+        public UrlHelperService(string apiUrl)
+        {
+            ApiUrl = apiUrl;
+        }
     }
 }

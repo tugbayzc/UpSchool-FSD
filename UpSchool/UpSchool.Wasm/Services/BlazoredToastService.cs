@@ -2,19 +2,20 @@ using Blazored.Toast.Configuration;
 using Blazored.Toast.Services;
 using UpSchool.Domain.Services;
 
-namespace UpSchool.Wasm.Services;
-
-public class BlazoredToastService:IToasterService
+namespace UpSchool.Wasm.Services
 {
-    private readonly IToastService _toastService;
-
-    public BlazoredToastService(IToastService toastService)
+    public class BlazoredToastService:IToasterService
     {
-        _toastService = toastService;
-    }
+        private readonly IToastService _toastService;
 
-    public void ShowSuccess(string message)
-    {
-        _toastService.ShowSuccess(message,x=>x.Position=ToastPosition.BottomRight);
+        public BlazoredToastService(IToastService toastService)
+        {
+            _toastService = toastService;
+        }
+
+        public void ShowSuccess(string message)
+        {
+            _toastService.ShowSuccess(message, x=> x.Position = ToastPosition.BottomRight);
+        }
     }
 }

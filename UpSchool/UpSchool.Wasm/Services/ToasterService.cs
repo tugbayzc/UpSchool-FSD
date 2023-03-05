@@ -1,26 +1,26 @@
-using Blazored.Toast.Services;
 using Microsoft.JSInterop;
 using Shipwreck.BlazorJqueryToast;
 using UpSchool.Domain.Services;
 
-namespace UpSchool.Wasm.Services;
-
-public class ToasterService:IToasterService
+namespace UpSchool.Wasm.Services
 {
-    private readonly IJSRuntime _jsRuntime;
-
-    public ToasterService(IJSRuntime jsRuntime)
+    public class ToasterService : IToasterService
     {
-        _jsRuntime = jsRuntime;
-    }
+        private readonly IJSRuntime _jsRuntime;
 
-    public void ShowSuccess(string message)
-    {
-        _jsRuntime.ShowToastAsync(new ToastOptions
+        public ToasterService(IJSRuntime jsRuntime)
         {
-            Text = message,
-            Position= ToastPosition.TopCenter,
-            Heading = "UpSchool"
-        });
+            _jsRuntime = jsRuntime;
+        }
+
+        public void ShowSuccess(string message)
+        {
+            _jsRuntime.ShowToastAsync(new ToastOptions
+            {
+                Text = message,
+                Position = ToastPosition.TopCenter,
+                Heading = "UpSchool"
+            });
+        }
     }
 }

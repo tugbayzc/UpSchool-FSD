@@ -1,9 +1,18 @@
-namespace UpSchool.Domain.Common;
-
-public abstract class LoggerBase
+namespace UpSchool.Domain.Common
 {
-    public virtual void Log(string message)
+    public abstract class LoggerBase
     {
-        Console.WriteLine(message);
+        private readonly string _apiurl;
+        public LoggerBase(string titanicFluteUrl)
+        {
+            _apiurl = titanicFluteUrl;
+        }
+
+        public virtual void Log(string message)
+        {
+            Console.WriteLine(message);
+
+            Console.WriteLine(_apiurl);
+        }
     }
 }

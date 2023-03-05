@@ -1,6 +1,7 @@
-namespace UpSchool.Domain.Services;
-
-public interface IToasterService
+namespace UpSchool.Domain.Services
 {
-    void ShowSuccess(string message);
+    public interface IToasterService
+    {
+        void ShowSuccess(string message);
+    }
 }

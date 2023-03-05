@@ -1,6 +1,7 @@
-namespace UpSchool.Domain.Services;
-
-public interface IUrlHelperService
-{ 
-    string ApiUrl { get; }
+namespace UpSchool.Domain.Services
+{
+    public interface IUrlHelperService
+    {
+        string ApiUrl { get;}
+    }
 }
