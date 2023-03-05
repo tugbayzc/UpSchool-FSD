@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using UpSchool.Domain.Services
+@using UpSchool.Wasm.Common.Utilities
 @inject NavigationManager NavigationManager
 @inject IToasterService ToastService 
 @inject IUrlHelperService UrlHelperService
@@ -10,11 +11,15 @@
 @code
 {
     public string Length = "25";
-    public string TitanicUrl { get; set; }  
+    public string TitanicUrl { get; set; }
+    public ConsoleLogger ConsoleLogger = new ConsoleLogger();
+    public ToasterLogger ToasterLogger;
 
-    
     protected override void OnInitialized()
     {
+        ToasterLogger = new ToasterLogger(ToastService);
+        ToasterLogger.Log("Component is being initialized.");
+        //ConsoleLogger.Log("Component is being initialized.");
         TitanicUrl = UrlHelperService.ApiUrl;
         base.OnInitialized();
     }

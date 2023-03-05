@@ -2,7 +2,7 @@ using UpSchool.Domain.Common;
 
 namespace UpSchool.Wasm.Common.Utilities;
 
-public class ConcoleLogger:LoggerBase
+public class ConsoleLogger:LoggerBase
 {
     
 }
