@@ -5,7 +5,7 @@ namespace UpSchool.Domain.Utilities;
 
 public class PasswordGenerator
 {
-    private const string Numbers = "0123456789";
+        private const string Numbers = "0123456789";
         private const string LowercaseCharacters = "abcdefghijklmnopqrstuvwxyz";
         private const string UppercaseCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         private const string SpecialCharacters = "!@#$%^&*()";
@@ -23,6 +23,7 @@ public class PasswordGenerator
             _charSetBuilder = new StringBuilder();
 
         }
+      
 
         public string Generate(GeneratePasswordDto generatePasswordDto)
         {
@@ -58,4 +59,5 @@ public class PasswordGenerator
 
             return _passwordBuilder.ToString();
         }
+        
 }
