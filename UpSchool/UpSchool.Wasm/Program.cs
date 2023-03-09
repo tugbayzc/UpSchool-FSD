@@ -19,7 +19,7 @@ var titanicFluteApiUrl = builder.Configuration.GetConnectionString("TitanicFlute
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7296/api/") });
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5078/api/") });
 
 builder.Services.AddBlazoredToast();
 
