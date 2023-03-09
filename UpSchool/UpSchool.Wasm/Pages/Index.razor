@@ -23,14 +23,8 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-8">
-                            <p>
-                                @password
-                            </p>
-                            
-                        </div>
-                        <div class="col col-md-1">
-                            <span @onclick="@(() => UndoPasswordAsync(index:0))" class="oi oi-action-undo clickable" aria-hidden="true"></span>
+                        <div class="col-md-9">
+                            <p>@password</p>
                         </div>
                         <div class="col-md-1">
                             <span @onclick="@(() => SavePasswordAsync())" class="oi oi-folder clickable" aria-hidden="true"></span>
@@ -98,18 +92,15 @@
 
     </div>
 
-    <SavedPasswordsCard 
-        savedPasswords="@savedPasswords" 
-        OnCopyToClipboardAsync="CopyToClipboardAsync"
-                            OnClearSavedPasswords=@ClearSavedPasswords />
+    <SavedPasswordsCard savedPasswords="@savedPasswords"
+                        OnCopyToClipboardAsync="CopyToClipboardAsync"
+                        OnClearSavedPasswords=@ClearSavedPasswords />
 
 </div>
 
 
 @code
 {
-
-
     public PasswordGenerator passwordGenerator = new PasswordGenerator();
 
     public GeneratePasswordDto generatePasswordDto = new GeneratePasswordDto();
@@ -120,23 +111,18 @@
 
     private List<string> savedPasswords;
 
-    private List<string> allPasswords;
-    
-    
-
     protected override async Task OnInitializedAsync()
     {
-
         savedPasswords = new List<string>();
-        
+
         GeneratePassword();
 
         savedPasswords = await HttpClient.GetFromJsonAsync<List<string>>("Passwords");
 
-        //var localStoragePasswords = await LocalStorage.GetItemAsync<List<string>>("savedPasswords");
+    //var localStoragePasswords = await LocalStorage.GetItemAsync<List<string>>("savedPasswords");
 
         //if (localStoragePasswords is not null) savedPasswords = localStoragePasswords;
-        
+
         await base.OnInitializedAsync();
     }
 
@@ -151,24 +137,13 @@
         return LocalStorage.SetItemAsync("savedPasswords", savedPasswords);
     }
 
-    private  string UndoPasswordAsync(int index)
-    {
-        try
-        {
-            index++;
-            return allPasswords[allPasswords.Count - 1 - index];
-        }
-        catch (Exception e)
-        {
-            throw new Exception("hatalı");
-        }
-    }
-
     private void GeneratePassword()
     {
         password = passwordGenerator.Generate(generatePasswordDto);
-        allPasswords.Add(password);
+
         CssColourClass = CssUtilities.GetCssColourClassForPasswords(password.Length);
+
+        //savedPasswords.Add(password);
     }
 
     private async Task CopyToClipboardAsync()
@@ -176,7 +151,6 @@
         ToastService.ShowSuccess("The selected password was copied to the clipboard.");
 
         await JsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", password);
-        
     }
 
     private void CheckboxOnChange(ChangeEventArgs args, string checkBoxName)
@@ -217,7 +191,8 @@
         CssColourClass = CssUtilities.GetCssColourClassForPasswords(generatePasswordDto.Length);
 
     }
-    
+
+
 
     private void ClearSavedPasswords()
     {
