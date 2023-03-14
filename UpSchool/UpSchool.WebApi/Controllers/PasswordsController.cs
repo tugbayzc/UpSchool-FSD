@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UpSchool.Domain.Dtos;
 using UpSchool.Domain.Utilities;
@@ -27,7 +26,7 @@ namespace UpSchool.WebApi.Controllers
         [HttpGet]
         public IActionResult GetPasswords()
         {
-            List<string> passwords = new List<string>();
+            List<string> passwords = new List<string>(); 
 
             for (int i = 0; i < 9; i++)
                 passwords.Add(_passwordGenerator.Generate(_generatePasswordDto));
