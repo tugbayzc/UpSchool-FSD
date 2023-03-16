@@ -40,5 +40,17 @@ namespace UpSchool.WebApi.Controllers
             
             return NoContent();
         }
+        
+        [HttpDelete("{password}")]
+        public IActionResult Delete(string password)
+        {
+            if (!_passwords.Any(p=>p==password))
+                return BadRequest("The given password was not found.");
+            
+            _passwords.Remove(password);
+            
+            return NoContent();
+        }
+        
     }
 }
