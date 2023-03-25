@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using UpSchool.Domain.Dtos;
 using UpSchool.Domain.Entities;
@@ -9,6 +10,12 @@ namespace UpSchool.WebApi.Controllers
     [ApiController]
     public class AccountsController : ControllerBase
     {
+        private readonly IMapper _mapper;
+        public AccountsController(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+        
         private static List<Account> _accounts = new() {
             new Account()
             {
@@ -42,6 +49,8 @@ namespace UpSchool.WebApi.Controllers
             Url = "www.sinemalar.com"
             }
         };
+
+        
 
         [HttpGet]
         public IActionResult GetAll()
@@ -79,6 +88,16 @@ namespace UpSchool.WebApi.Controllers
             
             _accounts.Add(account);
             
+            return Ok(AccountDto.MapFromAccount(account));
+        }
+        
+        [HttpPut]
+        public IActionResult Edit(AccountEditDto accountEditDto)
+        {
+            var account = _accounts.FirstOrDefault(x => x.Id == accountEditDto.Id);
+            if (account is null) return NotFound("The selected account was not found.");
+            var updatedAccount = _mapper.Map<Account>(accountEditDto);
+
             return Ok(AccountDto.MapFromAccount(account));
         }
         

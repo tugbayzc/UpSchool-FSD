@@ -61,7 +61,7 @@
         else
         {
             <div class="d-flex justify-content-center">
-                <img src="svgs/pencil.svg" class="me-2"/> <h2>Edit The Account</h2>
+                <img src="images/dilan_load.gif" alt="loading"/>
             </div>
         }
     </div>
@@ -80,8 +80,8 @@
     protected override async Task OnInitializedAsync()
     {
         await Task.Delay(1000);
-        
-        var accountDto = await HttpClient.GetFromJsonAsync<AccountDto>($"api/Accounts/{Id}");
+
+        var accountDto = await HttpClient.GetFromJsonAsync<AccountDto>(($"Accounts/{Id}"));
 
         editDto = new AccountEditDto()
         {
@@ -104,13 +104,13 @@
     {
         editDto.Password = StringHelper.Base64Encode(editDto.Password);
 
-        var response = await HttpClient.PostAsJsonAsync("Accounts", editDto);
+        var response = await HttpClient.PutAsJsonAsync("Accounts", editDto);
 
         if (response.IsSuccessStatusCode)
         {
             var accountDto = await response.Content.ReadFromJsonAsync<AccountDto>();
 
-            ToasterService.ShowSuccess($"The account titled \"{accountDto.Title}\" was successfully added.");
+            ToasterService.ShowSuccess($"The account titled \"{accountDto.Title}\" was successfully edited.");
 
             NavigationManager.NavigateTo("/");
 
