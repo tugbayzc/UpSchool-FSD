@@ -9,5 +9,5 @@ public class Account
     public string? Url { get; set; }
     public bool IsFavourite { get; set; }
     public DateTimeOffset CreatedOn { get; set; }
-    public DateTimeOffset LastModidifiedOn { get; set; }
+    public DateTimeOffset? LastModidifiedOn { get; set; }
 }

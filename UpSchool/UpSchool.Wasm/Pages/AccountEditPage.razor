@@ -89,7 +89,7 @@
             Title = accountDto.Title,
             Url = accountDto.Url,
             UserName = accountDto.UserName,
-            Password = accountDto.Password,
+            Password = StringHelper.Base64Decode(accountDto.Password),
             IsFavourite = accountDto.IsFavourite
         };
         
