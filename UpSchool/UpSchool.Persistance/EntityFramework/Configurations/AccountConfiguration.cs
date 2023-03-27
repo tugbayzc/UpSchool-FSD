@@ -14,11 +14,14 @@ public class AccountConfiguration:IEntityTypeConfiguration<Account>
         // TITLE
         builder.Property(x=>x.Title).IsRequired();
         builder.Property(x => x.Title).HasMaxLength(150);
+        //builder.HasIndex(x => x.Title);
+
+        builder.HasIndex(x => new { x.Title, x.UserName });
         
         // USERNAME
         builder.Property(x=>x.UserName).IsRequired();
         builder.Property(x => x.UserName).HasMaxLength(100);
-        
+
         // PASSWORD
         builder.Property(x=>x.Password).IsRequired();
         builder.Property(x => x.Password).HasMaxLength(100);

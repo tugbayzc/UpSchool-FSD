@@ -18,7 +18,7 @@
                     <hr />
                     <div class="d-flex flex-row">
                         <button class="btn btn-success " @onclick="@(() => NavigationManager.NavigateTo("/accounts/add"))">Add</button>
-                        <button class="btn btn-warning ms-2" @onclick="@(() => NavigationManager.NavigateTo("/accounts/add"))">Ondo</button>
+                        <input type="text" @oninput=@SearchInputChange class="form-control w-25 ms-2" placeholder="Search"/>
                     </div>
                     <hr />
                     <div class="row">
@@ -93,8 +93,6 @@
 
             accounts = await FetchAccountsAsync();
         }
-
-
     }
 
     private Task<List<AccountDto>?> FetchAccountsAsync()
@@ -116,7 +114,8 @@
             return;
         }
 
-        var searchedAccounts = await HttpClient.GetFromJsonAsync<List<AccountDto>>($"Accounts?searchKeyword={searchKeyword}");
+        var searchedAccounts = await HttpClient
+            .GetFromJsonAsync<List<AccountDto>>($"Accounts?searchKeyword={searchKeyword}");
 
         accounts = searchedAccounts;
     }

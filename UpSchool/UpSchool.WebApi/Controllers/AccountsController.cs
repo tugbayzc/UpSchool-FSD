@@ -20,9 +20,19 @@ namespace UpSchool.WebApi.Controllers
         }
         
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(string? searchKeyword)
         {
-            var accounts = _dbConext.Accounts.ToList();
+            var accounts = string.IsNullOrEmpty(searchKeyword)
+                ? 
+                _dbConext
+                    .Accounts
+                    .ToList()
+                : 
+                _dbConext
+                    .Accounts
+                    .Where(x => x.Title.Contains(searchKeyword) || x.UserName.Contains(searchKeyword))
+                    .ToList();
+            
             var accountDtos = accounts.Select(account => AccountDto.MapFromAccount(account));
 
             return Ok(accountDtos);
