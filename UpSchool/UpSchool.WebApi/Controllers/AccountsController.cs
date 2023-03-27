@@ -2,7 +2,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using UpSchool.Domain.Dtos;
 using UpSchool.Domain.Entities;
-using UpSchool.Domain.Utilities;
 using UpSchool.Persistance.EntityFramework.Contexts;
 
 namespace UpSchool.WebApi.Controllers
@@ -20,19 +19,19 @@ namespace UpSchool.WebApi.Controllers
         }
         
         [HttpGet]
-        public IActionResult GetAll(string? searchKeyword)
+        public IActionResult GetAll(bool isAscending, string? searchKeyword)
         {
-            var accounts = string.IsNullOrEmpty(searchKeyword)
-                ? 
-                _dbConext
-                    .Accounts
-                    .ToList()
-                : 
-                _dbConext
-                    .Accounts
-                    .Where(x => x.Title.Contains(searchKeyword) || x.UserName.Contains(searchKeyword))
-                    .ToList();
-            
+            IQueryable<Account> accountsQuery = _dbConext.Accounts.AsQueryable();
+            if (!string.IsNullOrEmpty(searchKeyword))
+                accountsQuery=accountsQuery.Where(x => 
+                    x.Title.Contains(searchKeyword) || x.UserName.Contains(searchKeyword));
+
+            accountsQuery = isAscending
+                ? accountsQuery.OrderBy(x => x.Title)
+                : accountsQuery.OrderByDescending(x => x.Title);
+
+            var accounts = accountsQuery.ToList();
+           
             var accountDtos = accounts.Select(account => AccountDto.MapFromAccount(account));
 
             return Ok(accountDtos);
