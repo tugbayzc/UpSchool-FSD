@@ -11,4 +11,7 @@ public abstract class Account:EntityBase<Guid>
     public bool IsFavourite { get; set; }
     public string UserId { get; set; }
     
+    public ICollection<AccountCategory> AccountCategories { get; set; }
+
+    
 }

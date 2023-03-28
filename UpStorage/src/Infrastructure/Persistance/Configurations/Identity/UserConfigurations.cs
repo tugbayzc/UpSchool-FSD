@@ -1,3 +1,4 @@
+using Domain.Entities;
 using Domain.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -58,7 +59,8 @@ namespace Infrastructure.Persistance.Configurations.Identity
             // Each User can have many entries in the UserRole join table
             builder.HasMany<UserRole>().WithOne().HasForeignKey(ur => ur.UserId).IsRequired();
 
-            //Each User can have many UserTokens
+            //Each User can have many Addresses
+            //builder.HasMany<Address>().WithOne().HasForeignKey(x => x.UserId);
 
             // CreatedDate
             builder.Property(x => x.CreatedOn).IsRequired();
