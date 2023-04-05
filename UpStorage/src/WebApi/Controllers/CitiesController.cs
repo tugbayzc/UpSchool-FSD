@@ -16,6 +16,7 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> GetAllAsync(CityGetAllQuery query)
         {
+            //dışarıdan aldığı objeyi kullanır![HttpPost]
             return Ok(await Mediator.Send(query));
         }
 

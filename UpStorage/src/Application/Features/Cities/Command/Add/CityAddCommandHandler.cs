@@ -1,17 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Application.Common.Interfaces;
-using Application.Features.Cities.Command.Add;
 using Domain.Common;
 using Domain.Entities;
 using MediatR;
 
-namespace Application.Features.Cities.Commands.Add
+namespace Application.Features.Cities.Command.Add
 {
     public class CityAddCommandHandler:IRequestHandler<CityAddCommand,Response<int>>
+        //Mediator buradan anlayacak nereye gideceğini!
     {
         private readonly IApplicationDbContext _applicationDbContext;
 
@@ -30,12 +25,13 @@ namespace Application.Features.Cities.Commands.Add
                 Longitude = request.Longitude,
                 CreatedOn = DateTimeOffset.Now,
                 CreatedByUserId = null,
-                IsDeleted = false,
+                IsDeleted = false
             };
 
             await _applicationDbContext.Cities.AddAsync(city, cancellationToken);
 
             await _applicationDbContext.SaveChangesAsync(cancellationToken);
+            //savechanges yapmadan db ye hiçbir şey gitmez!
 
             return new Response<int>($"The new city named \"{city.Name}\" was successfully added.",city.Id);
         }
