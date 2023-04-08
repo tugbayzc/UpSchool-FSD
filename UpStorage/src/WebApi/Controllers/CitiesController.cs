@@ -1,13 +1,15 @@
 using Application.Features.Cities.Command.Add;
 using Application.Features.Cities.Queries.GetAll;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Filters;
 
 namespace WebApi.Controllers
 {
-
+    [ValidationFilter]
     public class CitiesController : ApiControllerBase
     {
         [HttpPost]
+        
         public async Task<IActionResult> AddAsync(CityAddCommand command)
         {
             return Ok(await Mediator.Send(command));
