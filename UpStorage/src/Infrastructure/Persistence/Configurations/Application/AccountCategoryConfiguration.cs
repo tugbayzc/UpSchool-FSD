@@ -2,7 +2,7 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Persistance.Configurations.Application;
+namespace Infrastructure.Persistence.Configurations.Application;
 
 public class AccountCategoryConfiguration:IEntityTypeConfiguration<AccountCategory>
 {
@@ -13,7 +13,7 @@ public class AccountCategoryConfiguration:IEntityTypeConfiguration<AccountCatego
         builder.HasKey(x => new { x.AccountId, x.CategoryId });
         
         //Relationships
-        builder.HasOne<Account>(X=>X.Account)
+        builder.HasOne<Account>(x=>x.Account)
             .WithMany(x=>x.AccountCategories)
             .HasForeignKey(x=>x.AccountId);
         builder.HasOne<Category>(x=>x.Category)

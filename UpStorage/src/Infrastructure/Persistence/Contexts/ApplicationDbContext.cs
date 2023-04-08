@@ -1,11 +1,10 @@
+using System.Reflection;
 using Application.Common.Interfaces;
 using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 using Domain.Identity;
-using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Persistance.Contexts
+namespace Infrastructure.Persistence.Contexts
 {
     public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
@@ -13,16 +12,7 @@ namespace Infrastructure.Persistance.Contexts
         public DbSet<Country> Countries { get; set; }
         public DbSet<City> Cities { get; set; }
 
-        public class BloggingContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
-        {
-            public ApplicationDbContext CreateDbContext(string[] args)
-            {
-                var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-                optionsBuilder.UseMySql();
-
-                return new ApplicationDbContext(optionsBuilder.Options);
-            }
-        }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

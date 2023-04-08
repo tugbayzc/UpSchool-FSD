@@ -3,7 +3,7 @@ using Domain.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Persistance.Configurations.Application;
+namespace Infrastructure.Persistence.Configurations.Application;
 
 public class AddressConfiguration:IEntityTypeConfiguration<Address>
 {

@@ -4,7 +4,7 @@ using Domain.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Persistance.Contexts;
+namespace Infrastructure.Persistence.Contexts;
 
 public class IdentityContext :IdentityDbContext<User,Role,string,UserClaim,UserRole,UserLogin,RoleClaim,UserToken>
 {
