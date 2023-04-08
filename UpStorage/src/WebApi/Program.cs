@@ -12,8 +12,6 @@ builder.Services.AddSwaggerGen();
 
 // Add services to the container.
 builder.Services.AddApplicationServices();
-
-//Encapsulation! Infrastructure da yazdık buraya kapsülledik!
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
