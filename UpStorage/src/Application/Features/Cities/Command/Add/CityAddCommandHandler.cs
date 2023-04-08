@@ -18,10 +18,10 @@ namespace Application.Features.Cities.Command.Add
 
         public async Task<Response<int>> Handle(CityAddCommand request, CancellationToken cancellationToken)
         {
-            if (!request.Name.IsContainsChar(3))
-            {
-                throw new Exception();
-            }
+            //if (!request.Name.IsContainsChar(3))
+            //{
+            //   throw new Exception();
+            //}
             
             var city = new City()
             {

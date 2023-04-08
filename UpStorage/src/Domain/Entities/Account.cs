@@ -2,7 +2,7 @@ using Domain.Common;
 
 namespace Domain.Entities;
 
-public abstract class Account:EntityBase<Guid>
+public class Account:EntityBase<Guid>
 {
     public string Title { get; set; }
     public string UserName { get; set; }

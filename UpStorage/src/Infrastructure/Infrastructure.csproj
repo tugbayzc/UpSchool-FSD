@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-    </PropertyGroup>
+      <UserSecretsId>b8a1da1a-3931-4821-a52d-5e612cc32960</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="ExcelDataReader.Mapping" Version="2.2.2" />
