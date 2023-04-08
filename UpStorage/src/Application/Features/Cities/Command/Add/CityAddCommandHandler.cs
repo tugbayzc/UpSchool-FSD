@@ -3,6 +3,7 @@ using Domain.Common;
 using Domain.Entities;
 using Domain.Extensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Cities.Command.Add
 {
@@ -15,13 +16,23 @@ namespace Application.Features.Cities.Command.Add
         {
             _applicationDbContext = applicationDbContext;
         }
+        
+        
 
         public async Task<Response<int>> Handle(CityAddCommand request, CancellationToken cancellationToken)
         {
-            //if (!request.Name.IsContainsChar(3))
-            //{
-            //   throw new Exception();
-            //}
+
+            if (!await _applicationDbContext.Countries.AnyAsync(x=>
+                    x.Id==request.CountryId,cancellationToken))
+            {
+                throw new ArgumentNullException(nameof(request.CountryId));
+            }
+            
+            if (await _applicationDbContext.Cities.AnyAsync(x=>
+                    x.Name.ToLower()==request.Name.ToLower(),cancellationToken))
+            {
+                throw new ArgumentNullException(nameof(request.Name));
+            }
             
             var city = new City()
             {
