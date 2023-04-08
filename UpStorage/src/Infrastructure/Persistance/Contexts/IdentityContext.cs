@@ -21,6 +21,9 @@ public class IdentityContext :IdentityDbContext<User,Role,string,UserClaim,UserR
         modelBuilder.Ignore<Account>();
         modelBuilder.Ignore<Country>();
         modelBuilder.Ignore<City>();
+        modelBuilder.Ignore<Address>();
+        modelBuilder.Ignore<Category>();
+        modelBuilder.Ignore<AccountCategory>();
 
 
 

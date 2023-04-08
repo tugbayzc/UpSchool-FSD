@@ -12,19 +12,19 @@ namespace Infrastructure;
 public static class ConfigureServices
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services,
-        IConfiguration configuration)//(extend,parameter)
+        IConfiguration configuration)
     {
+
         
         var connectionString = configuration.GetConnectionString("MariaDB")!;
 
-        //DbContext
-        services.AddDbContext<ApplicationDbContext>(opt => opt
-            .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+        // DbContext 
+        services.AddDbContext<ApplicationDbContext>(opt => opt.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+        
+        services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
         services.AddDbContext<IdentityContext>(opt => opt.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
-       
-        services.AddScoped<ApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
-        
+
         services.AddIdentity<User, Role>(options =>
             {
 
@@ -35,17 +35,17 @@ public static class ConfigureServices
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
-                
                 // User Username and Email Options
                 options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+$";
                 options.User.RequireUniqueEmail = true;
-            })
-            .AddEntityFrameworkStores<IdentityContext>()
+
+            }).AddEntityFrameworkStores<IdentityContext>()
             .AddDefaultTokenProviders();
-        
-        //ScopedServices
+
+        // Scoped Services
         services.AddScoped<IExcelService, ExcelManager>();
-        
+
+
         return services;
     }
 }

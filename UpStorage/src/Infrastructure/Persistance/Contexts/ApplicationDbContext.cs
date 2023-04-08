@@ -1,37 +1,46 @@
-using System.Reflection;
 using Application.Common.Interfaces;
 using Domain.Entities;
-using Domain.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using Domain.Identity;
+using Microsoft.EntityFrameworkCore.Design;
 
-namespace Infrastructure.Persistance.Contexts;
-
-public class ApplicationDbContext:DbContext,IApplicationDbContext
+namespace Infrastructure.Persistance.Contexts
 {
-    public DbSet<Account> Accounts { get; set; }
-    public DbSet<Country> Countries { get; set; }
-    public DbSet<City> Cities { get; set; }
-
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+    public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
-        //opt.useMySQL(connectionStrings)=>buraya geliyor!
-    }
-    
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        //configurations
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        
-        //ignores
-        modelBuilder.Ignore<User>();
-        modelBuilder.Ignore<Role>();
-        modelBuilder.Ignore<UserRole>();
-        modelBuilder.Ignore<UserToken>();
-        modelBuilder.Ignore<UserClaim>();
-        modelBuilder.Ignore<UserLogin>();
-        modelBuilder.Ignore<RoleClaim>();
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<City> Cities { get; set; }
 
+        public class BloggingContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
+        {
+            public ApplicationDbContext CreateDbContext(string[] args)
+            {
+                var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+                optionsBuilder.UseMySql();
 
-        base.OnModelCreating(modelBuilder);
+                return new ApplicationDbContext(optionsBuilder.Options);
+            }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+            // Configurations
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            // Ignores
+            modelBuilder.Ignore<User>();
+            modelBuilder.Ignore<Role>();
+            modelBuilder.Ignore<UserRole>();
+            modelBuilder.Ignore<RoleClaim>();
+            modelBuilder.Ignore<UserToken>();
+            modelBuilder.Ignore<UserClaim>();
+            modelBuilder.Ignore<UserLogin>();
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
+
 }
