@@ -13,7 +13,7 @@ builder.Services.AddControllers(opt=>opt.Filters.Add<ValidationFilter>());
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
-    options.SuppressModelStateInvalidFilter = true;
+    //options.SuppressModelStateInvalidFilter = true;
 });
 
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
