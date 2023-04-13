@@ -13,5 +13,5 @@ public class CityAddCommand:IRequest<Response<int>>
     public decimal? Latitude { get; set; }
     public decimal? Longitude { get; set; }
 
-    public List<Guid>? CountryIds { get; set; }
+    //public List<Guid>? CountryIds { get; set; }
 }

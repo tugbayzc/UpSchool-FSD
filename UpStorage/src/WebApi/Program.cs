@@ -8,8 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers(opt=>opt.Filters.Add<ValidationFilter>());
+builder.Services.AddControllers(
+    opt=>opt.Filters.Add<GlobalExceptionFilter>()
+    );
 //filtreyi bütün controllerlara vermiş olduk!
+
+
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
