@@ -25,5 +25,8 @@ namespace UpSchool.Domain.Dtos
 
         [Required]
         public bool IsFavourite { get; set; }
+
+        public string ConnectionId { get; set; }
+
     }
 }

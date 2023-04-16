@@ -1,8 +1,11 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using UpSchool.Domain.Dtos;
 using UpSchool.Domain.Entities;
+using UpSchool.Domain.Utilities;
 using UpSchool.Persistance.EntityFramework.Contexts;
+using UpSchool.WebApi.Hubs;
 
 namespace UpSchool.WebApi.Controllers
 {
@@ -10,12 +13,14 @@ namespace UpSchool.WebApi.Controllers
     [ApiController]
     public class AccountsController : ControllerBase
     {
+        private readonly IHubContext<AccountsHub> _accountHubContext;
         private readonly IMapper _mapper;
         private readonly UpStorageDbContext _dbConext;
-        public AccountsController(IMapper mapper, UpStorageDbContext dbConext)
+        public AccountsController(IMapper mapper, UpStorageDbContext dbConext, IHubContext<AccountsHub> accountHubContext)
         {
             _mapper = mapper;
             _dbConext = dbConext;
+            _accountHubContext = accountHubContext;
         }
         
         [HttpGet]
@@ -52,7 +57,7 @@ namespace UpSchool.WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(AccountAddDto accountAddDto)
+        public async Task<IActionResult> AddAsync(AccountAddDto accountAddDto, CancellationToken cancellationToken)
         {
             var account = new Account()
             {
@@ -65,10 +70,13 @@ namespace UpSchool.WebApi.Controllers
                 Url = accountAddDto.Url
             };
             
-            _dbConext.Accounts.Add(account);
-            _dbConext.SaveChanges();
+            await _dbConext.Accounts.AddAsync(account,cancellationToken);
+            await _dbConext.SaveChangesAsync(cancellationToken);
+            var accountDto = AccountDto.MapFromAccount(account);
+
+            await _accountHubContext.Clients.AllExcept(accountAddDto.ConnectionId).SendAsync(SignalRMethodKeys.Accounts.Added,accountDto,cancellationToken);
             
-            return Ok(AccountDto.MapFromAccount(account));
+            return Ok(accountDto);
         }
         
         [HttpPut]

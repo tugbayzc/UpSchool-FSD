@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using UpSchool.Domain.Entities;
 using UpSchool.Persistance.EntityFramework.Contexts;
 using UpSchool.WebApi.AutoMapper.Profiles;
+using UpSchool.WebApi.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<UpStorageDbContext>(opt =>
     opt.UseMySql(mariaDbConnectionString,ServerVersion.AutoDetect(mariaDbConnectionString)));
@@ -47,5 +49,7 @@ app.UseCors("AllowAll");
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<AccountsHub>("/Hubs/AccountsHub");
 
 app.Run();
