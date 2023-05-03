@@ -23,9 +23,6 @@ public class AuthRegisterCommandValidator:AbstractValidator<AuthRegisterCommand>
         if (doesExists) return false;
         return true;
 
-
-
-
     }
 
 }

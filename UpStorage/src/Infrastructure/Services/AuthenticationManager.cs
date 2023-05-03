@@ -31,7 +31,7 @@ public class AuthenticationManager:IAuthenticationService
             
             throw new ValidationException(failures);
         }
-
+        
         return user.Id;
     }
 

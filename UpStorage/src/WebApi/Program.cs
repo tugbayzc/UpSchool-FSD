@@ -1,5 +1,6 @@
 using System.Text;
 using Application;
+using Domain.Settings;
 using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Filters;
@@ -13,6 +14,8 @@ builder.Services.AddControllers(
     );
 //filtreyi bütün controllerlara vermiş olduk!
 
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+//Dependency Injection ile!
 
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>

@@ -7,11 +7,13 @@ namespace Application.Features.Auth.Commands.Register;
 public class AuthRegisterCommandHandler:IRequestHandler<AuthRegisterCommand, AuthRegisterDto>
 {
 
+    private readonly IJwtService _jwtService;
     private readonly IAuthenticationService _authenticationService;
 
-    public AuthRegisterCommandHandler(IAuthenticationService authenticationService)
+    public AuthRegisterCommandHandler(IAuthenticationService authenticationService, IJwtService jwtService)
     {
         _authenticationService = authenticationService;
+        _jwtService = jwtService;
     }
 
     public async Task<AuthRegisterDto> Handle(AuthRegisterCommand request, CancellationToken cancellationToken)
@@ -21,7 +23,9 @@ public class AuthRegisterCommandHandler:IRequestHandler<AuthRegisterCommand, Aut
         var emailToken = await _authenticationService.GenerateEmailActivationTokenAsync(userId, cancellationToken);
 
         var fullName = $"{request.FirstName}{request.LastName}";
+        
+        var jwtDto = _jwtService.Generate(userId, request.Email, request.FirstName, request.LastName);
 
-        return new AuthRegisterDto(request.Email, fullName, emailToken);
+        return new AuthRegisterDto(request.Email, fullName, jwtDto.AccessToken);
     }
 }
