@@ -1,9 +1,11 @@
 using Application.Features.Cities.Command.Add;
 using Application.Features.Cities.Queries.GetAll;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
+    [Authorize]
     public class CitiesController : ApiControllerBase
     {
         [HttpPost]

@@ -15,11 +15,13 @@ public class AuthRegisterCommandHandler:IRequestHandler<AuthRegisterCommand, Aut
         _authenticationService = authenticationService;
         _jwtService = jwtService;
     }
-
+ 
     public async Task<AuthRegisterDto> Handle(AuthRegisterCommand request, CancellationToken cancellationToken)
     {
         var createUserDto = new CreateUserDto(request.FirstName, request.LastName, request.Email, request.Password);
+        
         var userId = await _authenticationService.CreateUserAsync(createUserDto, cancellationToken);
+        
         var emailToken = await _authenticationService.GenerateEmailActivationTokenAsync(userId, cancellationToken);
 
         var fullName = $"{request.FirstName}{request.LastName}";
