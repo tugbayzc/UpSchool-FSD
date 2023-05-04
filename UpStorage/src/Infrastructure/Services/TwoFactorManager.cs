@@ -31,4 +31,14 @@ public class TwoFactorManager:ITwoFactorService
         return twoFactorDto;
 
     }
+
+    public bool Validate(string userCode)
+    {
+        var key = Encoding.UTF8.GetBytes(SecretKey);
+
+        var totp = new Totp(key);
+
+        return totp.VerifyTotp(userCode, out _);
+        
+    }
 }
