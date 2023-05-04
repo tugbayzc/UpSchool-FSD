@@ -31,6 +31,10 @@ public class AuthRegisterCommandHandler:IRequestHandler<AuthRegisterCommand, Aut
         var fullName = $"{request.FirstName}{request.LastName}";
         
         var jwtDto = _jwtService.Generate(userId, request.Email, request.FirstName, request.LastName);
+
+        var name = $"ALPER TUNGA     ";
+
+        name.Replace(" ", String.Empty);
         
         //SendEmail
         _emailService.SendEmailConfirmation(new SendEmailConfirmationDto()

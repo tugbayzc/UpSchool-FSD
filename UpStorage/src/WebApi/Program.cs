@@ -10,6 +10,7 @@ using WebApi.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
 
 builder.Services.AddControllers(
@@ -58,7 +59,7 @@ builder.Services.AddSwaggerGen(setupAction =>
 
 // Add services to the container.
 builder.Services.AddApplicationServices();
-builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddInfrastructure(builder.Configuration,builder.Environment.WebRootPath);
 
 builder.Services.AddAuthentication(options =>
     {
@@ -91,6 +92,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 
