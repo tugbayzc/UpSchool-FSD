@@ -1,3 +1,4 @@
+using System.Globalization;
 using Blazored.LocalStorage;
 using Blazored.Toast;
 using Microsoft.AspNetCore.Components.Web;
@@ -24,6 +25,11 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(apiUrl) 
 builder.Services.AddBlazoredToast();
 
 builder.Services.AddScoped<IToasterService, BlazoredToastService>();
+
+builder.Services.AddLocalization(opt =>
+{
+    opt.ResourcesPath = "Resources";
+});
 
 //builder.Services.AddSingleton(typeof(LoggerBase));
 

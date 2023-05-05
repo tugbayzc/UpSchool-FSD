@@ -1,3 +1,5 @@
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using UpSchool.Domain.Entities;
 using UpSchool.Persistance.EntityFramework.Contexts;
@@ -28,8 +30,8 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader());
 });
 
-builder.Services.AddAutoMapper(typeof(AccountProfile));
 
+builder.Services.AddAutoMapper(typeof(AccountProfile));
 
 var app = builder.Build();
 

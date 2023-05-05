@@ -4,6 +4,8 @@
 @using UpSchool.Domain.Utilities
 @using Microsoft.AspNetCore.SignalR.Client
 @using Blazored.Toast.Services
+@using Microsoft.Extensions.Localization
+@using System.Net.Http.Headers
 @inject IJSRuntime JsRuntime
 @inject IToasterService ToasterService
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
@@ -12,13 +14,14 @@
 @inject IUrlHelperService UrlHelperService
 @inject IToastService ToastService
 @implements IAsyncDisposable 
+@inject IStringLocalizer<object> Localizer
 
 <div class="container">
     <div class="row ">
         <div class="col-md-12">
             <div class="p-5 mb-4 bg-light rounded-3">
                 <div class="container-fluid">
-                    <h1 class="display-5 fw-bold text-center">My Accounts</h1>
+                    <h1 class="display-5 fw-bold text-center">My Accounts @Localizer["My Accounts"] Benim Hesaplarım </h1>
                     <hr />
                     <div class="d-flex flex-row">
                         <button class="btn btn-success" @onclick="@(() => NavigationManager.NavigateTo($"/accounts/add/{hubConnection.ConnectionId}"))">Add</button>
@@ -54,14 +57,12 @@
                                             <span class="input-group-text oi oi-eye clickable" @onclick="@(() => SetShowPassword(account))"></span>
                                             <span class="input-group-text oi oi-document clickable" @onclick="@(() => CopyToClipboardAsync(account.ShowPassword,account.Password))"></span>
                                         </div>
-
                                     </div>
                                     <div class="card-footer">
                                         <div class="d-flex justify-content-between">
                                             <button class="btn btn-info" @onclick="@(() => GoToEditPage(account.Id))">Edit</button>
                                             <button class="btn btn-danger" @onclick="@(() => DeleteAccountAsync(account.Id))">Delete</button>
                                         </div>
-                                        
                                     </div>
                                 </div>
                             </div>
@@ -164,6 +165,11 @@
 
     private Task<List<AccountDto>?> FetchAccountsAsync()
     {
+        HttpClient.DefaultRequestHeaders.Add("Accept-Language","tr-TR");
+
+        HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "token");
+
+            
         return HttpClient.GetFromJsonAsync<List<AccountDto>>($"Accounts?isAscending={isAscending}");
     }
 
