@@ -1,9 +1,12 @@
+using System.Globalization;
 using System.Text;
 using Application;
 using Domain.Settings;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WebApi.Filters;
@@ -84,6 +87,31 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
+//localization files path
+builder.Services.AddLocalization(opt =>
+{
+    opt.ResourcesPath = "Resources";
+});
+
+builder.Services.Configure<RequestLocalizationOptions>(opt =>
+{
+    var defaultCulture = new CultureInfo("en-GB");
+
+    List<CultureInfo> cultureInfos = new List<CultureInfo>()
+    {
+        defaultCulture,
+        new CultureInfo("tr-TR")
+    };
+
+    opt.SupportedCultures = cultureInfos;
+    
+    opt.SupportedUICultures = cultureInfos;
+    
+    opt.DefaultRequestCulture = new RequestCulture(defaultCulture);
+    
+    opt.ApplyCurrentCultureToResponseHeaders = true;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -94,6 +122,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseStaticFiles();
+
+//Localizations
+var requestLocalizationOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>();
+if (requestLocalizationOptions is not null) app.UseRequestLocalization(requestLocalizationOptions.Value);
 
 app.UseHttpsRedirection();
 

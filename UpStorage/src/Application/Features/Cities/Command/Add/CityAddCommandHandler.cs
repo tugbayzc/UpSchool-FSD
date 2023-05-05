@@ -1,9 +1,11 @@
 using Application.Common.Interfaces;
+using Application.Common.Localizations;
 using Domain.Common;
 using Domain.Entities;
 using Domain.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace Application.Features.Cities.Command.Add
 {
@@ -11,10 +13,12 @@ namespace Application.Features.Cities.Command.Add
         //Mediator buradan anlayacak nereye gideceğini!
     {
         private readonly IApplicationDbContext _applicationDbContext;
+        private readonly IStringLocalizer<CommonLocalizations> _localizer;
 
-        public CityAddCommandHandler(IApplicationDbContext applicationDbContext)
+        public CityAddCommandHandler(IApplicationDbContext applicationDbContext, IStringLocalizer<CommonLocalizations> localizer)
         {
             _applicationDbContext = applicationDbContext;
+            _localizer = localizer;
         }
         
         public async Task<Response<int>> Handle(CityAddCommand request, CancellationToken cancellationToken)
@@ -36,7 +40,7 @@ namespace Application.Features.Cities.Command.Add
             await _applicationDbContext.SaveChangesAsync(cancellationToken);
             //savechanges yapmadan db ye hiçbir şey gitmez!
 
-            return new Response<int>($"The new city named \"{city.Name}\" was successfully added.",city.Id);
+            return new Response<int>(_localizer[CommonLocalizationKeys.City.Added,city.Name],city.Id);
         }
     }
 }

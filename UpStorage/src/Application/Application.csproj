@@ -11,6 +11,7 @@
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.4" />
+        <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.5" />
     </ItemGroup>
 
     <ItemGroup>
@@ -19,6 +20,30 @@
 
     <ItemGroup>
       <Folder Include="Features\Auth\Common\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Recources\Common\Localizations\CommonLocalizations.en-GB.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>CommonLocalizations.en-GB.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Recources\Common\Localizations\CommonLocalizations.tr-TR.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>CommonLocalizations.tr-TR.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Recources\Common\Localizations\CommonLocalizations.en-GB.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>CommonLocalizations.en-GB.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Recources\Common\Localizations\CommonLocalizations.tr-TR.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>CommonLocalizations.tr-TR.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

@@ -26,8 +26,8 @@ public class CityAddCommandValidator:AbstractValidator<CityAddCommand>
         RuleFor(x => x.Name)
             .MustAsync((command, name, cancellationToken) =>
             {
-                return _applicationDbContext.Cities.AllAsync(x => x.Name.ToLower() == name.ToLower(),
-                    cancellationToken);
+                return _applicationDbContext.Cities.AllAsync(x=>x.Name.ToLower() != name.ToLower()
+                    ,cancellationToken);
             });
 
         //RuleFor(x => x.CountryIds).Must(IsCountryIdsLİstValid)
