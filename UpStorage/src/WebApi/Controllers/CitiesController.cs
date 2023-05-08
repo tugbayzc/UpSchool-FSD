@@ -15,6 +15,7 @@ namespace WebApi.Controllers
             return Ok(await Mediator.Send(command));
         }
 
+        [AllowAnonymous]
         [HttpPost("GetAll")]
         public async Task<IActionResult> GetAllAsync(CityGetAllQuery query)
         {
