@@ -10,42 +10,52 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using WebApi.Filters;
 using WebApi.Services;
 
-var builder = WebApplication.CreateBuilder(args);
 
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
-// Add services to the container.
-
-builder.Services.AddControllers(
-    opt=>opt.Filters.Add<GlobalExceptionFilter>()
-    );
-//filtreyi bütün controllerlara vermiş olduk!
-
-builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
-//Dependency Injection ile!
-
-
-builder.Services.Configure<ApiBehaviorOptions>(options =>
+try
 {
-    //options.SuppressModelStateInvalidFilter = true;
-});
+    var builder = WebApplication.CreateBuilder(args);
 
-Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+    builder.Host.UseSerilog();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(setupAction =>
-{
-    setupAction.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    // Add services to the container.
+
+    builder.Services.AddControllers(
+        opt => opt.Filters.Add<GlobalExceptionFilter>()
+        );
+    //filtreyi bütün controllerlara vermiş olduk!
+
+    builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+    //Dependency Injection ile!
+
+
+    builder.Services.Configure<ApiBehaviorOptions>(options =>
     {
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
-        BearerFormat = "JWT",
-        Description = $"Input your Bearer token in this format - Bearer token to access this API",
+        //options.SuppressModelStateInvalidFilter = true;
     });
-    setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
+
+    Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+    // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen(setupAction =>
+    {
+        setupAction.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT",
+            Description = $"Input your Bearer token in this format - Bearer token to access this API",
+        });
+        setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
@@ -59,88 +69,98 @@ builder.Services.AddSwaggerGen(setupAction =>
             new List<string>()
         },
     });
-});
+    });
 
 
-// Add services to the container.
-builder.Services.AddApplicationServices();
-builder.Services.AddInfrastructure(builder.Configuration,builder.Environment.WebRootPath);
+    // Add services to the container.
+    builder.Services.AddApplicationServices();
+    builder.Services.AddInfrastructure(builder.Configuration, builder.Environment.WebRootPath);
 
-builder.Services.AddAuthentication(options =>
+    builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     })
-    .AddJwtBearer(o =>
-    {
-        o.RequireHttpsMetadata = false;
-        o.SaveToken = false;
-        o.TokenValidationParameters = new TokenValidationParameters
+        .AddJwtBearer(o =>
         {
-            ValidateIssuerSigningKey = true,
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ClockSkew = TimeSpan.Zero,
-            ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-            ValidAudience = builder.Configuration["JwtSettings:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes
-                (builder.Configuration["JwtSettings:SecretKey"]))
-        };
+            o.RequireHttpsMetadata = false;
+            o.SaveToken = false;
+            o.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero,
+                ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+                ValidAudience = builder.Configuration["JwtSettings:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes
+                    (builder.Configuration["JwtSettings:SecretKey"]))
+            };
+        });
+
+    //localization files path
+    builder.Services.AddLocalization(opt =>
+    {
+        opt.ResourcesPath = "Resources";
     });
 
-//localization files path
-builder.Services.AddLocalization(opt =>
-{
-    opt.ResourcesPath = "Resources";
-});
+    builder.Services.Configure<RequestLocalizationOptions>(opt =>
+    {
+        var defaultCulture = new CultureInfo("en-GB");
 
-builder.Services.Configure<RequestLocalizationOptions>(opt =>
-{
-    var defaultCulture = new CultureInfo("en-GB");
-
-    List<CultureInfo> cultureInfos = new List<CultureInfo>()
+        List<CultureInfo> cultureInfos = new List<CultureInfo>()
     {
         defaultCulture,
         new CultureInfo("tr-TR")
     };
 
-    opt.SupportedCultures = cultureInfos;
-    
-    opt.SupportedUICultures = cultureInfos;
-    
-    opt.DefaultRequestCulture = new RequestCulture(defaultCulture);
-    
-    opt.ApplyCurrentCultureToResponseHeaders = true;
-});
+        opt.SupportedCultures = cultureInfos;
 
-builder.Services.AddSignalR();
+        opt.SupportedUICultures = cultureInfos;
 
-builder.Services.AddScoped<IAccountHubService, AccountHubManager>();
+        opt.DefaultRequestCulture = new RequestCulture(defaultCulture);
 
-builder.Services.AddMemoryCache();
+        opt.ApplyCurrentCultureToResponseHeaders = true;
+    });
 
-//builder.Services.AddDistributedMemoryCache();
+    builder.Services.AddSignalR();
 
-var app = builder.Build();
+    builder.Services.AddScoped<IAccountHubService, AccountHubManager>();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    builder.Services.AddMemoryCache();
+
+    //builder.Services.AddDistributedMemoryCache();
+
+    var app = builder.Build();
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseStaticFiles();
+
+    //Localizations
+    var requestLocalizationOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>();
+    if (requestLocalizationOptions is not null) app.UseRequestLocalization(requestLocalizationOptions.Value);
+
+    app.UseHttpsRedirection();
+
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    app.Run();
+
 }
-
-app.UseStaticFiles();
-
-//Localizations
-var requestLocalizationOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>();
-if (requestLocalizationOptions is not null) app.UseRequestLocalization(requestLocalizationOptions.Value);
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Application terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}

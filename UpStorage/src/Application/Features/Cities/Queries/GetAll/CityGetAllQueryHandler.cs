@@ -91,8 +91,6 @@ namespace Application.Features.Cities.Queries.GetAll
                     Latitude = city.Latitude
                 };
             }
-        }
-
-        
+        }        
     }
 }
