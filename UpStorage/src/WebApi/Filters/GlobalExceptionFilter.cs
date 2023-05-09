@@ -48,6 +48,8 @@ public class GlobalExceptionFilter:IAsyncExceptionFilter
             default:
                 _logger.LogError(context.Exception, context.Exception.Message);
 
+                //_mailService.SendErrorEmail();
+                
                 apiErrorDto.Message = "An unexpected error was occured.";
 
                 context.Result = new ObjectResult(apiErrorDto)
