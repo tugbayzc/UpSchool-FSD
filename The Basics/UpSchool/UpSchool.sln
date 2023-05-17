@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpSchool.WebApi", "UpSchool
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpSchool.Persistance", "UpSchool.Persistance\UpSchool.Persistance.csproj", "{7064D802-904D-4321-990D-0310EA18EA38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpSchool.Selenium.ConsoleClient", "UpSchool.Selenium.ConsoleClient\UpSchool.Selenium.ConsoleClient.csproj", "{A2D4EAEE-432A-4067-97C2-B8D4D52357B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpSchool.Selenium.ConsoleClient", "UpSchool.Selenium.ConsoleClient\UpSchool.Selenium.ConsoleClient.csproj", "{A2D4EAEE-432A-4067-97C2-B8D4D52357B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,49 @@
+﻿@page "/crawler_live_logs"
+@using Microsoft.AspNetCore.SignalR.Client;
+@using UpSchool.Domain.Dtos;
+@using UpSchool.Domain.Services;
+@using UpSchool.Domain.Utilities;
+@inject IUrlHelperService UrlHelperService
+
+
+<h3>CrawlerLiveLogs</h3>
+
+<div class=fakeMenu>
+    <div class="fakeButtons fakeClose"></div>
+    <div class="fakeButtons fakeMinimize"></div>
+    <div class="fakeButtons fakeZoom"></div>
+</div>
+
+<div class="fakeScreen">
+    @foreach (var log in logs)
+    {
+        <p class="line1">@log.Message <span class="cursor1">@log.SentOn.ToString("g")</span></p>
+    }
+
+</div>
+
+@code {
+
+    private List<SeleniumLogDto> logs = new List<SeleniumLogDto>();
+
+    private HubConnection? hubConnection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+        .WithUrl($"{UrlHelperService.SignalRUrl}/SeleniumLogHub")
+        .WithAutomaticReconnect()
+        .Build();
+
+        hubConnection.On<SeleniumLogDto>("NewSeleniumLogAdded", (seleniumLogDto) =>
+        {
+            logs.Add(seleniumLogDto);
+
+            InvokeAsync(StateHasChanged);
+        });
+
+        await hubConnection.StartAsync();
+
+        await base.OnInitializedAsync();
+    }
+}

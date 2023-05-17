@@ -1,4 +1,3 @@
-using System.Globalization;
 using Blazored.LocalStorage;
 using Blazored.Toast;
 using Microsoft.AspNetCore.Components.Web;
