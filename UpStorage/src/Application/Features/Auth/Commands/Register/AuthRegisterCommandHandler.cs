@@ -32,7 +32,7 @@ public class AuthRegisterCommandHandler:IRequestHandler<AuthRegisterCommand, Aut
         
         var jwtDto = _jwtService.Generate(userId, request.Email, request.FirstName, request.LastName);
 
-        var name = $"ALPER TUNGA     ";
+        var name = $"ALPER TUNGA  ";
 
         name.Replace(" ", String.Empty);
         
