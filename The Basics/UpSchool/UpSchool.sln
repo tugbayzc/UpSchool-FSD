@@ -1,16 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpSchool.Console", "UpSchool.Console\UpSchool.Console.csproj", "{792CF9D3-0C73-4EA8-B958-E44DB06036EF}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpSchool.Console", "UpSchool.Console\UpSchool.Console.csproj", "{792CF9D3-0C73-4EA8-B958-E44DB06036EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpSchool.Domain", "UpSchool.Domain\UpSchool.Domain.csproj", "{3AA3F0C2-B287-4A8F-94A3-EB578945B44C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpSchool.Domain", "UpSchool.Domain\UpSchool.Domain.csproj", "{3AA3F0C2-B287-4A8F-94A3-EB578945B44C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuckySister.Console", "LuckySister.Console\LuckySister.Console.csproj", "{02BD3CAF-E6B1-42D2-9622-D276E41E5556}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuckySister.Console", "LuckySister.Console\LuckySister.Console.csproj", "{02BD3CAF-E6B1-42D2-9622-D276E41E5556}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpSchool.Wasm", "UpSchool.Wasm\UpSchool.Wasm.csproj", "{F7ECDF0D-D285-42AF-84E4-17CAB1E7E8D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpSchool.Wasm", "UpSchool.Wasm\UpSchool.Wasm.csproj", "{F7ECDF0D-D285-42AF-84E4-17CAB1E7E8D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpSchool.WebApi", "UpSchool.WebApi\UpSchool.WebApi.csproj", "{EC2CF333-4268-4896-B4AB-837870521298}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpSchool.WebApi", "UpSchool.WebApi\UpSchool.WebApi.csproj", "{EC2CF333-4268-4896-B4AB-837870521298}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpSchool.Persistance", "UpSchool.Persistance\UpSchool.Persistance.csproj", "{7064D802-904D-4321-990D-0310EA18EA38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpSchool.Persistance", "UpSchool.Persistance\UpSchool.Persistance.csproj", "{7064D802-904D-4321-990D-0310EA18EA38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpSchool.Selenium.ConsoleClient", "UpSchool.Selenium.ConsoleClient\UpSchool.Selenium.ConsoleClient.csproj", "{A2D4EAEE-432A-4067-97C2-B8D4D52357B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,5 +47,15 @@ Global
 		{7064D802-904D-4321-990D-0310EA18EA38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7064D802-904D-4321-990D-0310EA18EA38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7064D802-904D-4321-990D-0310EA18EA38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2D4EAEE-432A-4067-97C2-B8D4D52357B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2D4EAEE-432A-4067-97C2-B8D4D52357B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2D4EAEE-432A-4067-97C2-B8D4D52357B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2D4EAEE-432A-4067-97C2-B8D4D52357B9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1E9BEEC8-5F69-415F-916D-E13857C8D880}
 	EndGlobalSection
 EndGlobal

@@ -1,7 +1,4 @@
-using System.Globalization;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
-using UpSchool.Domain.Entities;
 using UpSchool.Persistance.EntityFramework.Contexts;
 using UpSchool.WebApi.AutoMapper.Profiles;
 using UpSchool.WebApi.Hubs;
@@ -53,5 +50,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapHub<AccountsHub>("/Hubs/AccountsHub");
+
+app.MapHub<SeleniumLogHub>("/Hubs/SeleniumLogHub");
+
 
 app.Run();
