@@ -1,19 +1,20 @@
 ﻿@page "/"
+@using Blazored.Toast.Services;
 @using UpSchool.Domain.Services
+@using UpSchool.Domain.Entities
 @using UpSchool.Domain.Dtos
 @using UpSchool.Domain.Utilities
 @using Microsoft.AspNetCore.SignalR.Client
-@using Blazored.Toast.Services
 @using Microsoft.Extensions.Localization
 @using System.Net.Http.Headers
 @inject IJSRuntime JsRuntime
-@inject IToasterService ToasterService
+@inject IToasterService ToastService
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 @inject IUrlHelperService UrlHelperService
-@inject IToastService ToastService
-@implements IAsyncDisposable 
+@inject IToastService ToasterService
+@implements IAsyncDisposable
 @inject IStringLocalizer<object> Localizer
 
 <div class="container">
@@ -21,17 +22,17 @@
         <div class="col-md-12">
             <div class="p-5 mb-4 bg-light rounded-3">
                 <div class="container-fluid">
-                    <h1 class="display-5 fw-bold text-center">My Accounts @Localizer["My Accounts"] Benim Hesaplarım </h1>
+                    <h1 class="display-5 fw-bold text-center">My Accounts @Localizer["MyAccounts"] Benim Hesaplarım</h1>
                     <hr />
                     <div class="d-flex flex-row">
                         <button class="btn btn-success" @onclick="@(() => NavigationManager.NavigateTo($"/accounts/add/{hubConnection.ConnectionId}"))">Add</button>
-                        <input type="text" @oninput=@SearchInputChange class="form-control w-25 ms-2" placeholder="Search"/>
+                        <input type="text" @oninput=@SearchInputChange class="form-control w-25 ms-2" placeholder="Search" />
                         <select class="form-control w-25 ms-2" @onchange=@OnSelectChange>
                             <option value="true">Ascending</option>
                             <option value="false">Descending</option>
                         </select>
                     </div>
-                    <hr/>
+                    <hr />
                     <div class="row">
                         @foreach (var account in accounts)
                         {
@@ -57,12 +58,14 @@
                                             <span class="input-group-text oi oi-eye clickable" @onclick="@(() => SetShowPassword(account))"></span>
                                             <span class="input-group-text oi oi-document clickable" @onclick="@(() => CopyToClipboardAsync(account.ShowPassword,account.Password))"></span>
                                         </div>
+
                                     </div>
                                     <div class="card-footer">
                                         <div class="d-flex justify-content-between">
                                             <button class="btn btn-info" @onclick="@(() => GoToEditPage(account.Id))">Edit</button>
                                             <button class="btn btn-danger" @onclick="@(() => DeleteAccountAsync(account.Id))">Delete</button>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -79,7 +82,7 @@
 {
     private HubConnection? hubConnection;
 
-    List<AccountDto> accounts = new ();
+    List<AccountDto> accounts = new();
 
     private string searchKeyword = string.Empty;
 
@@ -91,30 +94,34 @@
             .WithUrl($"{UrlHelperService.SignalRUrl}/AccountsHub")
             .WithAutomaticReconnect()
             .Build();
+
         hubConnection.On<AccountDto>(SignalRMethodKeys.Accounts.Added, (accountDto) =>
         {
             accounts.Add(accountDto);
-            accounts = isAscending 
-                ? accounts.OrderBy(x=>x.Title).ToList() 
-                : accounts.OrderByDescending(x=>x.Title).ToList();
-            
-            ToasterService.ShowError($"The account titled {accountDto.Title} was successfully added.");
-            
+
+            accounts = isAscending ?
+                accounts.OrderBy(x => x.Title).ToList()
+                : accounts.OrderByDescending(x => x.Title).ToList();
+
+            ToasterService.ShowSuccess($"The account titled \"{accountDto.Title}\" was successfully added.");
+
             InvokeAsync(StateHasChanged);
-        }); 
+        });
+
         hubConnection.On<Guid>(SignalRMethodKeys.Accounts.Deleted, (accountId) =>
         {
             var account = accounts.FirstOrDefault(x => x.Id == accountId);
+
             accounts.Remove(account);
 
-            ToasterService.ShowError("The selected account was successfully deleted.");
-            
+            ToastService.ShowSuccess("The selected account was successfully deleted.");
+
             InvokeAsync(StateHasChanged);
         });
-        
+
         await hubConnection.StartAsync();
-        
-        accounts = await FetchAccountsAsync();
+
+        //accounts = await FetchAccountsAsync();
 
         await base.OnInitializedAsync();
     }
@@ -160,16 +167,14 @@
             accounts = await FetchAccountsAsync();
         }
 
-        
+
     }
 
     private Task<List<AccountDto>?> FetchAccountsAsync()
     {
         HttpClient.DefaultRequestHeaders.Add("Accept-Language","tr-TR");
-
         HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "token");
 
-            
         return HttpClient.GetFromJsonAsync<List<AccountDto>>($"Accounts?isAscending={isAscending}");
     }
 
@@ -219,30 +224,31 @@
             accounts.Remove(account);
 
             ToastService.ShowSuccess("The selected account was successfully deleted.");
+
             return;
-            
         }
+
         ToastService.ShowError("An unexpected error occurred.");
 
         return;
-        
-        
-    /*var response = await HttpClient.DeleteAsync($"Accounts/{id}");
 
-        if (response.IsSuccessStatusCode)
-        {
-            var account = accounts.FirstOrDefault(x => x.Id == id);
 
-            accounts.Remove(account);
+        //var response = await HttpClient.DeleteAsync($"Accounts/{id}");
 
-            ToastService.ShowSuccess("The selected account was successfully deleted.");
+        //if (response.IsSuccessStatusCode)
+        //{
+        //    var account = accounts.FirstOrDefault(x => x.Id == id);
 
-            return;
-        }
-        
-        ToastService.ShowError("An unexpected error occurred.");
+        //    accounts.Remove(account);
 
-        return;*/
+        //    ToastService.ShowSuccess("The selected account was successfully deleted.");
+
+        //    return;
+        //}
+
+        //ToastService.ShowError("An unexpected error occurred.");
+
+        //return;
     }
 
     public ValueTask DisposeAsync()
@@ -251,7 +257,8 @@
         {
             return hubConnection.DisposeAsync();
         }
-        
+
+
         return ValueTask.CompletedTask;
     }
 }

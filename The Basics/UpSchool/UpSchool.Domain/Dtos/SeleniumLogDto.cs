@@ -8,6 +8,7 @@
         public SeleniumLogDto(string message)
         {
             Message = message;
+
             SentOn = DateTimeOffset.Now;
         }
     }

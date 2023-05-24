@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using UpSchool.Domain.Dtos;
 using UpSchool.WebApi.Hubs;
@@ -17,14 +18,12 @@ namespace UpSchool.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SendNotificationAsync(SendLogNotificationApiDto logNotificationApiDto )
+        public async Task<IActionResult> SendLogNotificationAsync(SendLogNotificationApiDto logNotificationApiDto)
         {
-            await _seleniumLogHubContext.Clients
-                .AllExcept(logNotificationApiDto.ConnectionId)
+            await _seleniumLogHubContext.Clients.AllExcept(logNotificationApiDto.ConnectionId)
                 .SendAsync("NewSeleniumLogAdded", logNotificationApiDto.Log);
 
             return Ok();
-
         }
     }
 }
