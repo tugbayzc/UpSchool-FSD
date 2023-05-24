@@ -17,6 +17,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpSchool.Persistance", "UpS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpSchool.Selenium.ConsoleClient", "UpSchool.Selenium.ConsoleClient\UpSchool.Selenium.ConsoleClient.csproj", "{A2D4EAEE-432A-4067-97C2-B8D4D52357B9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0ECCD76E-9620-4B3A-B358-033BD0EC80EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpSchool.Domain.Tests", "tests\UpSchool.Domain.Tests\UpSchool.Domain.Tests.csproj", "{5D11A4C3-7302-4AC0-8237-864DD5E1B55F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,9 +55,16 @@ Global
 		{A2D4EAEE-432A-4067-97C2-B8D4D52357B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2D4EAEE-432A-4067-97C2-B8D4D52357B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2D4EAEE-432A-4067-97C2-B8D4D52357B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D11A4C3-7302-4AC0-8237-864DD5E1B55F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D11A4C3-7302-4AC0-8237-864DD5E1B55F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D11A4C3-7302-4AC0-8237-864DD5E1B55F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D11A4C3-7302-4AC0-8237-864DD5E1B55F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5D11A4C3-7302-4AC0-8237-864DD5E1B55F} = {0ECCD76E-9620-4B3A-B358-033BD0EC80EF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1E9BEEC8-5F69-415F-916D-E13857C8D880}
