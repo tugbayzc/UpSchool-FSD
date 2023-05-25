@@ -5,59 +5,84 @@ namespace UpSchool.Domain.Utilities;
 
 public class PasswordGenerator
 {
-        private const string Numbers = "0123456789";
-        private const string LowercaseCharacters = "abcdefghijklmnopqrstuvwxyz";
-        private const string UppercaseCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        private const string SpecialCharacters = "!@#$%^&*()";
+    private const string Numbers = "0123456789";
+    private const string LowercaseCharacters = "abcdefghijklmnopqrstuvwxyz";
+    private const string UppercaseCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private const string SpecialCharacters = "!@#$%^&*()";
+    private readonly ILocalDB _localDB;
 
-        private readonly Random _random;
-        private readonly StringBuilder _passwordBuilder;
-        private readonly StringBuilder _charSetBuilder;
+    private readonly Random _random;
+    private readonly StringBuilder _passwordBuilder;
+    private readonly StringBuilder _charSetBuilder;
+    private readonly IIPHelper _iPHelper;
 
-        public PasswordGenerator()
+    public PasswordGenerator(IIPHelper iPHelper, ILocalDB localDB)
+    {
+        _random = new Random();
+
+        _passwordBuilder = new StringBuilder();
+
+        _charSetBuilder = new StringBuilder();
+
+        _iPHelper = iPHelper;
+
+        _localDB = localDB;
+    }
+
+    public PasswordGenerator()
+    {
+
+    }
+
+    public string Generate(GeneratePasswordDto generatePasswordDto)
+    {
+        if (string.IsNullOrEmpty(_iPHelper.GetCurrentIPAddress()))
         {
-            _random = new Random();
-
-            _passwordBuilder = new StringBuilder();
-
-            _charSetBuilder = new StringBuilder();
-
+            throw new ArgumentNullException("IP Address is not valid.");
         }
-      
 
-        public string Generate(GeneratePasswordDto generatePasswordDto)
+        var ipList = _localDB.IPs;
+
+        if (!ipList.Any())
         {
-            _charSetBuilder.Clear();
-            _passwordBuilder.Clear();
-
-            if (generatePasswordDto.IncludeNumbers) _charSetBuilder.Append(Numbers);
-
-            if (generatePasswordDto.IncludeLowercaseCharacters) _charSetBuilder.Append(LowercaseCharacters);
-
-            if (generatePasswordDto.IncludeUppercaseCharacters) _charSetBuilder.Append(UppercaseCharacters);
-
-            if (generatePasswordDto.IncludeSpecialCharacters) _charSetBuilder.Append(SpecialCharacters);
-
-            //if (!generatePasswordDto.IncludeNumbers && !generatePasswordDto.IncludeLowercaseCharacters &&
-            //!generatePasswordDto.IncludeUppercaseCharacters && !generatePasswordDto.IncludeSpecialCharacters
-            //    )
-            if(generatePasswordDto is
-               {IncludeNumbers:false, IncludeLowercaseCharacters:false, 
-                   IncludeUppercaseCharacters:false, IncludeSpecialCharacters:false})
-            {
-                return string.Empty;
-            }
-
-            var charSet = _charSetBuilder.ToString();
-
-            for (int i = 0; i < generatePasswordDto.Length; i++)
-            {
-                var randomIndex = _random.Next(charSet.Length);
-
-                _passwordBuilder.Append(charSet[randomIndex]);
-            }
-
-            return _passwordBuilder.ToString();
+            throw new ArgumentNullException("IP:", "There are no IPs in the db to connect.");
         }
-        
+
+        _charSetBuilder.Clear();
+
+        _passwordBuilder.Clear();
+
+        if (generatePasswordDto.IncludeNumbers) _charSetBuilder.Append(Numbers);
+
+        if (generatePasswordDto.IncludeLowercaseCharacters) _charSetBuilder.Append(LowercaseCharacters);
+
+        if (generatePasswordDto.IncludeUppercaseCharacters) _charSetBuilder.Append(UppercaseCharacters);
+
+        if (generatePasswordDto.IncludeSpecialCharacters) _charSetBuilder.Append(SpecialCharacters);
+
+        //if (!generatePasswordDto.IncludeNumbers && !generatePasswordDto.IncludeLowercaseCharacters &&
+        //!generatePasswordDto.IncludeUppercaseCharacters && !generatePasswordDto.IncludeSpecialCharacters
+        //    )
+
+        if (generatePasswordDto is
+            {
+                IncludeNumbers: false, IncludeLowercaseCharacters: false,
+                IncludeUppercaseCharacters: false, IncludeSpecialCharacters: false
+            })
+        {
+            return string.Empty;
+        }
+
+        var charSet = _charSetBuilder.ToString();
+
+        for (int i = 0; i < generatePasswordDto.Length; i++)
+        {
+            var randomIndex = _random.Next(charSet.Length);
+
+            _passwordBuilder.Append(charSet[randomIndex]);
+        }
+
+        return _passwordBuilder.ToString();
+    }
+
 }
