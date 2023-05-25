@@ -1,4 +1,5 @@
-﻿using UpSchool.Domain.Entities;
+﻿using System.Linq.Expressions;
+using UpSchool.Domain.Entities;
 
 namespace UpSchool.Domain.Data
 {
@@ -12,7 +13,7 @@ namespace UpSchool.Domain.Data
 
         Task<int> UpdateAsync(User user, CancellationToken cancellationToken);
 
-        Task<int> DeleteAsync(Guid id,CancellationToken cancellationToken);
+        Task<int> DeleteAsync(Expression<Func<User,bool>> predicate,CancellationToken cancellationToken);
 
     }
 }

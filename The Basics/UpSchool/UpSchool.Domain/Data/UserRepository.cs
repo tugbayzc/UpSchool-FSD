@@ -1,4 +1,5 @@
 ﻿using SQLite;
+using System.Linq.Expressions;
 using UpSchool.Domain.Entities;
 
 namespace UpSchool.Domain.Data
@@ -22,9 +23,11 @@ namespace UpSchool.Domain.Data
             return _database.InsertAsync(user);
         }
 
-        public Task<int> DeleteAsync(Guid id, CancellationToken cancellationToken)
+
+        //Expression<Func<>
+        public Task<int> DeleteAsync(Expression<Func<User,bool>> predicate, CancellationToken cancellationToken)
         {
-            return _database.Table<User>().DeleteAsync(x=> x.Id == id);
+            return _database.Table<User>().DeleteAsync(predicate);
         }
 
 
